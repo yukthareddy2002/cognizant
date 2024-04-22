@@ -1,0 +1,6 @@
+What is cloud computing?
+-Cloud computing is the delivery of computing services over the internet. 
+-Computing services include common IT infrastructure such as virtual machines, storage, databases, and networking. 
+https://learn.microsoft.com/en-us/training/modules/describe-core-architectural-components-of-azure/3-get-started-azure-accounts
+GITHUB:
+https://github.com/deeksharm/DP203

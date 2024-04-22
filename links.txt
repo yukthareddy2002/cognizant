@@ -1,0 +1,9 @@
+PowerShell: https://learn.microsoft.com/en-us/training/paths/powershell/
+ 
+Az900:https://learn.microsoft.com/en-us/credentials/certifications/exams/az-900/
+ 
+DP900: https://learn.microsoft.com/en-us/credentials/certifications/exams/dp-900/
+ 
+DP203: https://learn.microsoft.com/en-us/credentials/certifications/exams/dp-203/
+ 
+BigData : https://data-flair.training/blogs/hadoop-architecture/
