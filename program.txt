@@ -1,0 +1,7 @@
+start main()
+a=10;
+b=20;
+c=a+b;
+print c;
+end;
+https://www.tutorialspoint.com/dwh/dwh_interview_questions.htm
