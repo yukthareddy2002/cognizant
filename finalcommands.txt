@@ -1,0 +1,65 @@
+-To replace part of a string in a column with another string, you can use the regexp_replace() function. For example, if you want to replace “Rd” with “Road” in the address column:
+Python
+
+from pyspark.sql.functions import regexp_replace
+
+df.withColumn('address', regexp_replace('address', 'Rd', 'Road')).show(truncate=False)
+
+-To conditionally replace column values based on specific conditions, use the when().otherwise() construct. For instance, to replace “Rd” with “Road”, “St” with “Street”, and “Ave” with “Avenue”:
+Python
+
+from pyspark.sql.functions import when
+
+df.withColumn('address',
+    when(df.address.endswith('Rd'), regexp_replace(df.address, 'Rd', 'Road'))
+    .when(df.address.endswith('St'), regexp_replace(df.address, 'St', 'Street'))
+    .when(df.address.endswith('Ave'), regexp_replace(df.address, 'Ave', 'Avenue'))
+    .otherwise(df.address)
+).show(truncate=False)
+
+
+-Using concat() Function:
+The concat() function concatenates multiple input columns into a single column. It works with strings, numeric values, binary data, and compatible array columns.
+To concatenate columns col1, col2, and col3 into a new column named “combined”:
+Python
+
+from pyspark.sql.functions import concat, lit
+
+df = df.withColumn("combined", concat(col("col1"), lit("_"), col("col2"), lit("_"), col("col3")))
+df.show(truncate=False)
+AI-generated code. Review and use carefully. More info on FAQ.
+Replace col1, col2, and col3 with the actual column names from your DataFrame.
+Using concat_ws() Function:
+The concat_ws() function concatenates string columns into a single column using a specified separator.
+To concatenate columns col1, col2, and col3 with a hyphen separator (“-”) into a new column named “combined”:
+Python
+
+from pyspark.sql.functions import concat_ws
+
+df = df.withColumn("combined", concat_ws("-", col("col1"), col("col2"), col("col3")))
+df.show(truncate=False)
+
+-Replace Underscores with Spaces:
+If your column names have underscores and you want to replace them with spaces, you can use the select() method along with a list comprehension. This approach dynamically renames all columns by replacing underscores with spaces:
+Python
+
+from pyspark.sql import functions as F
+
+renamed_df = df.select([F.col(col).alias(col.replace('_', ' ')) for col in df.columns])
+renamed_df.show(truncate=False)
+
+------------------------------------------
+to create a new fullname column:
+---------------------------------------- 
+from pyspark.sql.functions import concat, when, col
+
+# Add the "full_name" column
+df = df.withColumn("full_name",
+                   when(col("middlename").isNotNull(),
+                        concat(col("firstname"), " ", col("middlename"), " ", col("lastname"))
+                       ).otherwise(concat(col("firstname"), " ", col("lastname")))
+                  )
+
+# Show the updated DataFrame
+df.show()
+
