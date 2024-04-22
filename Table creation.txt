@@ -1,0 +1,85 @@
+create table Testing(
+country Varchar(1000),
+country_code Varchar(1000),
+year_week Varchar(1000),
+new_cases BigInt,
+tests_done BigInt,
+population BigInt,
+testing_rate Decimal,
+positivity_rate Decimal,
+testing_data_source Varchar(2000)
+);
+
+create table HospitalAdmissions
+(country Varchar(1000),
+indicator Varchar(1000),
+date Date,
+year_week Varchar(1000),
+value Decimal,
+source Varchar(1000),
+url Varchar(2000)
+);
+
+create table CountryWiseResponseMeasure(
+Country varchar(100),
+Response_measure varchar(100),
+change int,
+date_start date,
+date_end varchar(100)
+);
+
+create table AllOverDeaths(country Varchar(100),
+country_code Varchar(100),
+continent Varchar(100),
+population BigInt,
+indicator Varchar(100),
+daily_count BigInt,
+date date,
+rate_14_day Decimal,
+source Varchar(100)
+);
+
+create table DeathsInUKAndIndia (country Varchar(100),
+country_code Varchar(100),
+continent Varchar(100),
+population BigInt,
+indicator Varchar(100),
+daily_count BigInt,
+date date,
+rate_14_day Decimal,
+source Varchar(100)
+);
+
+
+create table parameter
+(
+    FolderName VARCHAR(200),
+    [FileName] VARCHAR(200),
+    SQLTable  VARCHAR(200)
+);
+
+
+
+INSERT into dbo.Parameter VALUES
+('ingest','case_deaths_uk_ind_only.csv','DeathsInUKAndIndia')
+('ingest','cases_deaths.csv','AllOverDeaths')
+('ingest','country_response.csv','CountryWiseResponseMeasure')
+('ingest','hospital_admissions.csv','HospitalAdmissions')
+('ingest','testing.csv','Testing')
+
+
+
+
+create procedure sp3final
+as 
+BEGIN
+    select * from dbo.parameter
+end
+
+
+
+EXEC sp3final;
+
+
+synapse2319933
+Yuktha@2002
