@@ -1,0 +1,77 @@
+to create fullname column within the same dataframe
+------------------------------------------------------
+
+from pyspark.sql.functions import concat, when, col,lit
+df = df.withColumn("FullName",
+                   when(col("Middle_Name").isNotNull(),
+                        concat(col("First_Name"), lit(" "), col("Middle_Name"), lit(" "), col("Last_Name"))
+                       ).otherwise(concat(col("First_Name"), lit(" "), col("Last_Name")))
+                  )
+display(df)
+
+--------------------------
+to drop particular columns within the dataframe
+--------------------------------------------------
+df=df.drop('First_Name','Middle_Name','Last_Name')
+display(df)
+
+-------------------------------------------------------
+to rename and to change datatypes within the dataframe
+-------------------------------------------------------
+rename= df.select(df.Customer_ID.cast('int'), df.timestamp.cast('date'), df.FullName.cast('string')).withColumnRenamed('timestamp', 'DateTime')
+rename.printSchema()
+
+-------------------------------------------------------
+If date is NULL or blank, give default date as ‘2020-11-28’. Format of date column should be YYYY-MM-DD. 
+---------------------------------------------------------
+from pyspark.sql.functions import when, col, lit, to_date
+
+default_date = "2020-11-28"
+df_with_default = df.withColumn("timestamp", when(col("timestamp").isNull(), lit(default_date)).otherwise(col('timestamp')))
+
+# Show the resulting DataFrame
+display(df_with_default.select('timestamp'))
+---------------------------------------------
+to insert a new column with stores the current date
+-----------------------------------------------------
+df = df.withColumn("InsertDate", F.current_date())
+display(df.select('InsertDate'))
+df.printSchema()
+
+-----------------------------------------------
+to remove _ from column header
+-----------------------------------------------
+from pyspark.sql import functions as F
+
+df = df.select([F.col(col).alias(col.replace('_', '')) for col in df.columns])
+df.printSchema()
+-------------------------------------------------
+Save the DataFrame to ADLS
+----------------------------------------------------
+df.write.parquet("abfss://refined@adls2319933.dfs.core.windows.net/final")
+
+
+ques:
+-why the parquet file is loading with different file names (4 came)?
+-what lit function do?
+
+---------------------------------------
+to change dateformat and changing slashes
+-----------------------------------------
+from pyspark.sql import functions as F
+datedf = datedf.na.fill("2020-11-28",["timestamp"])
+datedf = datedf.withColumn(
+    "timestamp",
+    F.when(
+        F.to_date(datedf["timestamp"], "dd-MM-yyyy").isNotNull(),
+        F.date_format(F.to_date(datedf["timestamp"], "dd-MM-yyyy"), "yyyy-MM-dd")
+    ).otherwise(
+        F.when(
+            F.to_date(datedf["timestamp"], "dd/MM/yyyy").isNotNull(),
+            F.date_format(F.to_date(datedf["timestamp"], "dd/MM/yyyy"), "yyyy-MM-dd")
+        ).otherwise(datedf["timestamp"])
+    )
+)
+display(datedf)
+
+I'm writing to formally express my interest in this role. I believe my skills for this position align well with the requirements of this role. I have been trained on various services like azuredatafactory,azuredatabricks,azuresynapseAnalytics,AzureDataBrick.
